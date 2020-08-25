@@ -11,7 +11,14 @@ export default function reducer(state = [], action) {
       },
     ];
   else if (action.type === "bugRemoved")
-    return state.bugs.filter((bug) => bug.id !== action.payload.id);
+    return state.filter((bug) => bug.id !== action.payload.id);
+  else if (action.type === "bugResolved")
+    return state.map((bug) => {
+      if (bug.id === action.payload.id) {
+        bug.resolved = true;
+      }
+      return bug;
+    });
 
   return state;
 }

@@ -1,5 +1,7 @@
-import store from "./store";
-import { bugAdded, bugResolved } from "./actions";
+import configureStore from "./store/configureStore";
+import { bugAdded, bugResolved } from "./store/bugs";
+
+const store = configureStore();
 
 store.dispatch(bugAdded("New bug"));
 store.dispatch(bugAdded("New bug"));

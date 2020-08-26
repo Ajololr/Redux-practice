@@ -3,9 +3,9 @@ import { bugAdded, bugResolved } from "./store/bugs";
 
 const store = configureStore();
 
-store.dispatch(bugAdded("New bug"));
-store.dispatch(bugAdded("New bug"));
-store.dispatch(bugAdded("New bug"));
-store.dispatch(bugResolved(1));
+store.dispatch(bugAdded({ description: "New bug" }));
+store.dispatch(bugAdded({ description: "New bug" }));
+store.dispatch(bugAdded({ description: "New bug" }));
+store.dispatch(bugResolved({ id: 1 }));
 
 console.log(store.getState());

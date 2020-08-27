@@ -1,48 +1,82 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
+import { apiCallBegan } from "./api";
 
 let lastId = 0;
 
 const slice = createSlice({
   name: "bugs",
-  initialState: [],
+  initialState: {
+    list: [],
+    loading: false,
+    lastFetch: null,
+  },
   reducers: {
+    bugsRequested: (bugs, action) => {
+      bugs.loading = true;
+    },
+
+    bugsRequestFailed: (bugs, action) => {
+      bugs.loading = false;
+    },
+
     bugAdded: (bugs, action) => {
-      bugs.push({
+      bugs.list.push({
         id: ++lastId,
         description: action.payload.description,
         resolved: false,
       });
     },
+
     bugRemoved: (bugs, action) => {
-      bugs = bugs.filter((bug) => bug.id !== action.payload.id);
+      bugs.list = bugs.list.filter((bug) => bug.id !== action.payload.id);
     },
+
     bugResolved: (bugs, action) => {
-      const index = bugs.findIndex((bug) => bug.id === action.payload.id);
-      bugs[index].resolved = true;
+      const index = bugs.list.findIndex((bug) => bug.id === action.payload.id);
+      bugs.list[index].resolved = true;
     },
+
     assignToUser: (bugs, action) => {
-      const index = bugs.findIndex((bug) => bug.id === action.payload.id);
-      bugs[index].userId = action.payload.userId;
+      const index = bugs.list.findIndex((bug) => bug.id === action.payload.id);
+      bugs.list[index].userId = action.payload.userId;
+    },
+
+    bugsReceived: (bugs, action) => {
+      bugs.list = action.payload.data;
+      bugs.loading = false;
     },
   },
 });
+
+const url = "/bugs";
+
+export const loadBugs = () =>
+  apiCallBegan({
+    url,
+    onStart: bugsRequested.type,
+    onSuccess: bugsReceived.type,
+    onFail: bugsRequestFailed.type,
+  });
 
 export const {
   bugAdded,
   bugRemoved,
   bugResolved,
   assignToUser,
+  bugsReceived,
+  bugsRequested,
+  bugsRequestFailed,
 } = slice.actions;
 export default slice.reducer;
 
 export const getUnresolvedBugs = createSelector(
-  (store) => store.entities.bugs,
+  (store) => store.entities.bugs.list,
   (bugs) => bugs.filter((bug) => !bug.resolved)
 );
 
 export const getUserBugs = (userId) =>
   createSelector(
-    (store) => store.entities.bugs,
+    (store) => store.entities.bugs.list,
     (bugs) => bugs.filter((bug) => bug.userId == userId)
   );

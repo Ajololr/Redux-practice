@@ -19,4 +19,6 @@ store.dispatch(assignToUser({ id: 2, userId: 1 }));
 
 store.dispatch(projectAdded({ name: "My project" }));
 
-console.log(getUserBugs(2)(store.getState()));
+store.dispatch({ type: "error", payload: { message: "test error" } });
+
+// console.log(getUserBugs(1)(store.getState()));

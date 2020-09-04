@@ -59,6 +59,22 @@ export const loadBugs = () =>
     onFail: bugsRequestFailed.type,
   });
 
+export const addBug = (bug) =>
+  apiCallBegan({
+    url,
+    method: "post",
+    data: bug,
+    onSuccess: bugAdded.type,
+  });
+
+export const resolveBug = (id) =>
+  apiCallBegan({
+    url: url + "/" + id,
+    method: "patch",
+    data: { resolved: true },
+    onSuccess: bugResolved.type,
+  });
+
 export const {
   bugAdded,
   bugRemoved,

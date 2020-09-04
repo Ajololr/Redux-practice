@@ -37,7 +37,7 @@ const slice = createSlice({
       bugs.list[index].resolved = true;
     },
 
-    assignToUser: (bugs, action) => {
+    bugAssignedToUser: (bugs, action) => {
       const index = bugs.list.findIndex((bug) => bug.id === action.payload.id);
       bugs.list[index].userId = action.payload.userId;
     },
@@ -75,11 +75,19 @@ export const resolveBug = (id) =>
     onSuccess: bugResolved.type,
   });
 
+export const assignBugToUser = (userId, bugId) =>
+  apiCallBegan({
+    url: url + "/" + bugId,
+    method: "patch",
+    data: { userId },
+    onSuccess: bugAssignedToUser.type,
+  });
+
 export const {
   bugAdded,
   bugRemoved,
   bugResolved,
-  assignToUser,
+  bugAssignedToUser,
   bugsReceived,
   bugsRequested,
   bugsRequestFailed,

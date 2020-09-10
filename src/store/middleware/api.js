@@ -4,15 +4,8 @@ import Axios from "axios";
 const api = ({ dispatch }) => (next) => async (action) => {
   if (action.type !== actions.apiCallBegan.type) return next(action);
 
-  const {
-    url,
-    method,
-    data,
-    onStart,
-    onSuccess,
-    onError,
-    onStart,
-  } = action.payload;
+  console.log("DEBUG", action.type);
+  const { url, method, data, onSuccess, onError, onStart } = action.payload;
 
   if (onStart) dispatch({ type: onStart });
 

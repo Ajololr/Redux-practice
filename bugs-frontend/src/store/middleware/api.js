@@ -1,6 +1,8 @@
 import * as actions from "../api";
 import Axios from "axios";
 
+const baseURL = "localhost";
+
 const api = ({ dispatch }) => (next) => async (action) => {
   if (action.type !== actions.apiCallBegan.type) return next(action);
 

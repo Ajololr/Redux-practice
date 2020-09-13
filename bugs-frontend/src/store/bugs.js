@@ -102,5 +102,5 @@ export const getUnresolvedBugs = createSelector(
 export const getUserBugs = (userId) =>
   createSelector(
     (store) => store.entities.bugs.list,
-    (bugs) => bugs.filter((bug) => bug.userId == userId)
+    (bugs) => bugs.filter((bug) => bug.userId === userId)
   );

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
 
 let lastId = 0;
 
